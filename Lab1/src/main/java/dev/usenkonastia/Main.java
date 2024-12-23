@@ -1,6 +1,7 @@
 package dev.usenkonastia;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class Main {
@@ -8,6 +9,12 @@ public class Main {
         Stream<ChthonicCreature> creatureStream = Task3.get();
 
         List<ChthonicCreature> gatheredCreatures = Task4.get(creatureStream);
-        gatheredCreatures.forEach(System.out::println);
+
+        Map<String, List<ChthonicCreature>> groupedCreatures = Task5.filterAndGroupByType(gatheredCreatures, 100, 500);
+
+        groupedCreatures.forEach((type, creatures) -> {
+            System.out.println("Вид істоти: " + type);
+            creatures.forEach(System.out::println);
+        });
     }
 }
