@@ -16,5 +16,7 @@ public class Main {
             System.out.println("Вид істоти: " + type);
             creatures.forEach(System.out::println);
         });
+
+       Task6.getStatistics(gatheredCreatures);
     }
 }
