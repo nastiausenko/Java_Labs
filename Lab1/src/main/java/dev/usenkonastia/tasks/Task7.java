@@ -8,6 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Task 7: Analyzes attack power statistics and identifies outliers using the IQR method.
+ *
+ * @author  Anastasiia Usenko
+ * @see     AttackPowerSummary
+ */
 public class Task7 {
 
     public static void analyzeAttackPowers(List<ChthonicCreature> creatures) {

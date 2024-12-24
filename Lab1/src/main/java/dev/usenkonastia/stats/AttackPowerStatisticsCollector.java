@@ -9,6 +9,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+/**
+ * A custom {@link Collector} that accumulates statistics about the attack power of chthonic creatures.
+ * Processes a stream of {@link ChthonicCreature} objects and calculates aggregated statistics
+ * specifically related to their attack power. It accumulates attack power values into an {@link AttackPowerStatistics}
+ * object, enabling efficient computation and representation of aggregated statistics.
+ *
+ * @author Anastasiia Usenko
+ */
 public class AttackPowerStatisticsCollector implements Collector<ChthonicCreature, AttackPowerStatistics, AttackPowerStatistics> {
 
     @Override

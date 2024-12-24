@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
-
+/**
+ * Utility class for generating random instances of {@link ChthonicCreature}.
+ *
+ * @author Anastasiia Usenko
+ */
 public class ChthonicCreatureGenerator {
     private static final List<String> NAMES = List.of("Мара", "Лілея", "Чорт", "Відьма", "Русалка");
     private static final List<String> TYPES = List.of("Демон", "Дух", "Вампір", "Перевертень", "Горгулья");
