@@ -3,7 +3,13 @@ package dev.usenkonastia.models;
 import dev.usenkonastia.validation.annotations.NotNull;
 import dev.usenkonastia.validation.annotations.StringLength;
 
+/**
+ * Represents an order with orderId and status, validated using custom annotations.
+ *
+ * @author Anastasiia Usenko
+ */
 public class Order {
+
     @NotNull
     private String orderId;
 

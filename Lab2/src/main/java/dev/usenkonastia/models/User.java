@@ -5,7 +5,13 @@ import dev.usenkonastia.validation.annotations.MinValue;
 import dev.usenkonastia.validation.annotations.NotNull;
 import dev.usenkonastia.validation.annotations.StringLength;
 
+/**
+ * Represents a user with username and age, validated using custom annotations.
+ *
+ * @author Anastasiia Usenko
+ */
 public class User {
+
     @NotNull
     @StringLength(min = 3, max = 20)
     private String username;

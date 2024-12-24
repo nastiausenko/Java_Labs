@@ -4,8 +4,30 @@ import dev.usenkonastia.validation.annotations.StringLength;
 
 import java.lang.reflect.Field;
 
+/**
+ * Validator for fields annotated with {@link StringLength}.
+ * <p>
+ * Ensures that the length of the String field value falls within
+ * the specified minimum and maximum boundaries.
+ * </p>
+ *
+ * @author Anastasiia Usenko
+ */
 public class StringLengthValidator implements FieldValidator {
 
+    /**
+     * Validates the given field of the specified object.
+     * <p>
+     * This method checks whether the field annotated with {@link StringLength}
+     * contains a {@code String} value with a length within the defined range.
+     * </p>
+     *
+     * @param obj   the object containing the field to validate
+     * @param field the field to validate
+     * @throws IllegalArgumentException if the field's value is not a {@code String}
+     *                                  or if its length is outside the defined range
+     * @throws IllegalAccessException   if the field cannot be accessed
+     */
     @Override
     public void validate(Object obj, Field field) throws IllegalArgumentException, IllegalAccessException {
         field.setAccessible(true);
