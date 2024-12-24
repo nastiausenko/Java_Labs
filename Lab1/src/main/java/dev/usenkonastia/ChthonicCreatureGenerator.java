@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 
 public class ChthonicCreatureGenerator {
-    private static final List<String> NAMES = List.of("мара", "Лілея", "Чорт", "Відьма", "Русалка");
+    private static final List<String> NAMES = List.of("Мара", "Лілея", "Чорт", "Відьма", "Русалка");
     private static final List<String> TYPES = List.of("Демон", "Дух", "Вампір", "Перевертень", "Горгулья");
     private static final Random RANDOM = new Random();
 

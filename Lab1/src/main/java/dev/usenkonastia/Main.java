@@ -18,5 +18,6 @@ public class Main {
         });
 
        Task6.getStatistics(gatheredCreatures);
+       Task7.analyzeAttackPowers(gatheredCreatures);
     }
 }
