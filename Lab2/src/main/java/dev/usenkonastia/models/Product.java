@@ -1,8 +1,10 @@
 package dev.usenkonastia.models;
 
 import dev.usenkonastia.validation.annotations.MinValue;
+import dev.usenkonastia.validation.annotations.NotNull;
 
 public class Product {
+    @NotNull
     private String name;
 
     @MinValue(0)
