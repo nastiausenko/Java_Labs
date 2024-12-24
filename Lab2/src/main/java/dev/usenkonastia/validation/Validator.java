@@ -3,10 +3,8 @@ package dev.usenkonastia.validation;
 import dev.usenkonastia.validation.annotations.MaxValue;
 import dev.usenkonastia.validation.annotations.MinValue;
 import dev.usenkonastia.validation.annotations.NotNull;
-import dev.usenkonastia.validation.validators.FieldValidator;
-import dev.usenkonastia.validation.validators.MaxValueValidator;
-import dev.usenkonastia.validation.validators.MinValueValidator;
-import dev.usenkonastia.validation.validators.NotNullValidator;
+import dev.usenkonastia.validation.annotations.StringLength;
+import dev.usenkonastia.validation.validators.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -16,7 +14,8 @@ public class Validator {
     private static final List<FieldValidator> validators = List.of(
             new MaxValueValidator(),
             new MinValueValidator(),
-            new NotNullValidator()
+            new NotNullValidator(),
+            new StringLengthValidator()
     );
 
     public static void validate(Object obj) throws IllegalArgumentException, IllegalAccessException {
@@ -42,6 +41,10 @@ public class Validator {
 
         if (validator instanceof NotNullValidator) {
             return NotNull.class;
+        }
+
+        if (validator instanceof StringLengthValidator) {
+            return StringLength.class;
         }
 
         throw new IllegalArgumentException("Unknown validator: " + validator.getClass().getName());
