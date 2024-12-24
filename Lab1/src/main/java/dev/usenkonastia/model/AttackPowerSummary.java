@@ -1,4 +1,4 @@
-package dev.usenkonastia;
+package dev.usenkonastia.model;
 
 public record AttackPowerSummary(int data, int outliers) {
     @Override

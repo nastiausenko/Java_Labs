@@ -1,4 +1,6 @@
-package dev.usenkonastia;
+package dev.usenkonastia.tasks;
+
+import dev.usenkonastia.model.ChthonicCreature;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

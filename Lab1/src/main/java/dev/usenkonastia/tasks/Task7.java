@@ -1,4 +1,7 @@
-package dev.usenkonastia;
+package dev.usenkonastia.tasks;
+
+import dev.usenkonastia.model.AttackPowerSummary;
+import dev.usenkonastia.model.ChthonicCreature;
 
 import java.util.Collections;
 import java.util.List;

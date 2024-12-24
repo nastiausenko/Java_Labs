@@ -1,4 +1,4 @@
-package dev.usenkonastia;
+package dev.usenkonastia.stats;
 
 import java.util.ArrayList;
 import java.util.List;

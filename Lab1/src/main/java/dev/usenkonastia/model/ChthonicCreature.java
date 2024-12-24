@@ -1,4 +1,4 @@
-package dev.usenkonastia;
+package dev.usenkonastia.model;
 
 import java.time.LocalDate;
 

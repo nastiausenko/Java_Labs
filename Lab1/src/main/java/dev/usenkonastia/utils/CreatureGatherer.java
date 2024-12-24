@@ -1,4 +1,6 @@
-package dev.usenkonastia;
+package dev.usenkonastia.utils;
+
+import dev.usenkonastia.model.ChthonicCreature;
 
 import java.util.ArrayList;
 import java.util.List;

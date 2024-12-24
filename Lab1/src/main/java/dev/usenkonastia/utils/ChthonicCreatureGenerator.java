@@ -1,4 +1,6 @@
-package dev.usenkonastia;
+package dev.usenkonastia.utils;
+
+import dev.usenkonastia.model.ChthonicCreature;
 
 import java.time.LocalDate;
 import java.util.List;

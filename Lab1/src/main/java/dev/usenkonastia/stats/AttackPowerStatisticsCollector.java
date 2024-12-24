@@ -1,4 +1,6 @@
-package dev.usenkonastia;
+package dev.usenkonastia.stats;
+
+import dev.usenkonastia.model.ChthonicCreature;
 
 import java.util.Set;
 import java.util.function.BiConsumer;
