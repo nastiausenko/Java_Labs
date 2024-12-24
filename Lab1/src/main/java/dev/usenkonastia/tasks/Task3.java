@@ -1,7 +1,7 @@
 package dev.usenkonastia.tasks;
 
-import dev.usenkonastia.utils.ChthonicCreatureGenerator;
 import dev.usenkonastia.model.ChthonicCreature;
+import dev.usenkonastia.utils.ChthonicCreatureGenerator;
 
 import java.util.stream.Stream;
 
