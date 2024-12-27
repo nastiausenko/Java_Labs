@@ -12,9 +12,8 @@ import java.util.List;
  * against a manually implemented validation mechanism for {@link User} objects.
  * It also showcases validation of {@link Product} and {@link Order} using reflection.
  * </p>
- * <p>
- * Author: Anastasiia Usenko
- * </p>
+ *
+ * @author Anastasiia Usenko
  */
 public class Main {
     public static void main(String[] args) {
