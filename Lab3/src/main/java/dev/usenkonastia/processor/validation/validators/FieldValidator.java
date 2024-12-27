@@ -1,4 +1,4 @@
-package dev.usenkonastia.validation.validators;
+package dev.usenkonastia.processor.validation.validators;
 
 import java.lang.reflect.Field;
 

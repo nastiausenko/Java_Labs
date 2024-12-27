@@ -1,6 +1,6 @@
-package dev.usenkonastia.validation.validators;
+package dev.usenkonastia.processor.validation.validators;
 
-import dev.usenkonastia.validation.annotations.StringLength;
+import dev.usenkonastia.processor.validation.annotations.StringLength;
 
 import java.lang.reflect.Field;
 

@@ -1,16 +1,26 @@
-# Laboratory work 2
+# Laboratory work 3
 
 ## Anastasiia Usenko IM-23
 
-The project implements an object field validator using custom annotations in Java. Custom annotations for validation are 
-provided, such as MaxValue, MinValue, NotNull, and StringLength. The project includes two approaches: one that uses 
-reflection to dynamically validate object fields using annotations, and another that uses no reflection, using direct 
-access to fields to validate values. It displays a performance comparison between the two approaches, analyzing the 
-execution time of each validation method.
+### Variant 2
 
+The project includes an annotation processor that automatically generates SQL classes for each class annotated with 
+@SqlGenerator. This processor also validates objects based on the specified constraints and provides methods to generate 
+CREATE TABLE and INSERT SQL queries dynamically.
+
+## Features
+
+1. Field Validation: Custom field validation annotations such as NotNull, StringLength, MaxValue, and MinValue are used 
+to enforce constraints on object fields. If an annotation is applied to an incorrect field type (e.g., StringLength on 
+an Integer field), a configuration error is raised.
+
+2. SQL Generator Class Creation: The processor generates SQL generator classes for each annotated class, such as 
+UserSQLGenerator, OrderSQLGenerator, etc. These classes include methods for generating SQL commands:
+   * generateCreateTableSQL() for creating the table schema.
+   * generateInsertSQL() for creating SQL insert statements for a list of objects.
 ## Requirements
 
-You must have [Java 23](https://www.oracle.com/ua/java/technologies/downloads/#jdk23-linux) 
+You must have [Java 21](https://www.oracle.com/cis/java/technologies/downloads/#java21) 
 and [Maven](https://maven.apache.org/download.cgi) installed on your machine to run this application.
 
 ## Installation
@@ -23,20 +33,34 @@ git clone https://github.com/nastiausenko/Java_Labs.git
 
 ## Usage
 
-1. Navigate to the Lab2 folder from the root directory
+1. Navigate to the Lab3 folder from the root directory
+
+```bash
+cd Lab3
+```
+
+2. Build the processor
+
+```bash
+mvn clean package
+```
+
+3. Navigate to the Lab2 folder from the root directory
 
 ```bash
 cd Lab2
 ```
 
-2. Build the application
+4. Build the application
 
 ```bash
-mvn clean install
+mvn clean package
 ```
 
-3. Run the application
+> NOTE: Generated classes can be found in the `target/generated-sources/annotations` directory.
+
+5. Run the application
 
 ```bash
-java --enable-preview -cp target/classes dev.usenkonastia.Main
+java -jar target/lab2-0.0.1-SNAPSHOT.jar
 ```

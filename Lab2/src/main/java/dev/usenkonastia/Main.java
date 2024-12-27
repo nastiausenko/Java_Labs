@@ -1,71 +1,52 @@
 package dev.usenkonastia;
 
-import dev.usenkonastia.models.Order;
-import dev.usenkonastia.models.Product;
-import dev.usenkonastia.models.User;
-import dev.usenkonastia.validation.impl.UserValidator;
-import dev.usenkonastia.validation.Validator;
-import dev.usenkonastia.validation.ValidatorWithoutReflection;
+import dev.usenkonastia.models.*;
+
+import java.util.List;
 
 /**
- * Entry point of the application that demonstrates validation of objects
- * with and without the use of reflection.
+ * Entry point of the application that demonstrates the generation of SQL statements for various entities.
  * <p>
- * The application compares the performance of reflection-based validation
- * against a manually implemented validation mechanism for {@link User} objects.
- * It also showcases validation of {@link Product} and {@link Order} using reflection.
+ * The application creates instances of User, Product, and Order, and prints out SQL statements
+ * for creating and inserting data into the respective tables.
  * </p>
- * <p>
- * Author: Anastasiia Usenko
- * </p>
+ *
+ * @author Anastasiia Usenko
  */
 public class Main {
     public static void main(String[] args) {
-        User user = new User("Alice", 19);
-        Product product = new Product("Laptop", 1500.0);
-        Order order = new Order("ORD12345", "Shipped");
+        User user1 = User.builder().username("Alice").age(19).password("12345").build();
+        User user2 = User.builder().username("John").age(23).password("h23jbg").build();
 
-        validateWithReflection(product);
-        validateWithReflection(order);
+        Product product = Product.builder().name("Laptop").price(1500.0).build();
 
-        long startReflection = System.nanoTime();
-        validateWithReflection(user);
-        long endReflection = System.nanoTime();
+        Order order = Order.builder().orderId("ORD12345").status("Shipped").build();
 
-        long startNonReflection = System.nanoTime();
-        validateWithoutReflection(user);
-        long endNonReflection = System.nanoTime();
+        OrderSQLGenerator orderSQLGenerator = new OrderSQLGenerator();
+        printSQL("Order", orderSQLGenerator.generateCreateTableSQL(),
+                orderSQLGenerator.generateInsertSQL(List.of(order)));
 
-        System.out.println("Validation with reflection took: " + (endReflection - startReflection) + " ns");
-        System.out.println("Validation without reflection took: " + (endNonReflection - startNonReflection) + " ns");
-    }
+        UserSQLGenerator userSQLGenerator = new UserSQLGenerator();
+        printSQL("User", userSQLGenerator.generateCreateTableSQL(),
+                userSQLGenerator.generateInsertSQL(List.of(user1, user2)));
 
-
-    /**
-     * Validates an object using a reflection-based validation mechanism.
-     *
-     * @param obj the object to validate
-     */
-    private static void validateWithReflection(Object obj) {
-        try {
-            Validator.validate(obj);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+        ProductSQLGenerator productSQLGenerator = new ProductSQLGenerator();
+        printSQL("Product", productSQLGenerator.generateCreateTableSQL(),
+                productSQLGenerator.generateInsertSQL(List.of(product)));
     }
 
     /**
-     * Validates a {@link User} object using a non-reflection-based validation mechanism.
+     * Utility method to print SQL statements to the console.
      *
-     * @param user the user object to validate
+     * @param entityName   the name of the entity (e.g., "User", "Product", "Order")
+     * @param createTableSQL the SQL statement for creating the table
+     * @param insertSQL      the SQL statement for inserting data
      */
-    private static void validateWithoutReflection(User user) {
-        ValidatorWithoutReflection<User> userValidator = new UserValidator();
-
-        try {
-            userValidator.validate(user);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+    private static void printSQL(String entityName, String createTableSQL, String insertSQL) {
+        System.out.println("-------- " + entityName + " SQL --------");
+        System.out.println(createTableSQL);
+        System.out.println();
+        System.out.println(insertSQL);
+        System.out.println();
     }
 }
