@@ -1,10 +1,9 @@
 package dev.usenkonastia;
 
-import dev.usenkonastia.models.Order;
-import dev.usenkonastia.models.OrderSQLGenerator;
-import dev.usenkonastia.models.Product;
-import dev.usenkonastia.models.User;
-import dev.usenkonastia.processor.validation.Validator;
+import dev.usenkonastia.models.*;
+
+import java.util.List;
+
 /**
  * Entry point of the application that demonstrates validation of objects
  * with and without the use of reflection.
@@ -19,30 +18,29 @@ import dev.usenkonastia.processor.validation.Validator;
  */
 public class Main {
     public static void main(String[] args) {
-        User user = new User("Alice", 19);
-        Product product = new Product("Laptop", 1500.0);
-        Order order = new Order("ORD12345", "Shipped");
+        User user = User.builder().username("Alice").age(19).password("12345").build();
+        User user2 = User.builder().username("John").age(23).password("h23jbg").build();
 
-        validateWithReflection(product);
-        validateWithReflection(order);
-        validateWithReflection(user);
+        Product product = Product.builder().name("Laptop").price(1500.0).build();
 
-        OrderSQLGenerator generator = new OrderSQLGenerator();
-        System.out.println(generator.generateCreateTableSQL());
-        System.out.println(generator.generateInsertSQL(user));
-    }
+        Order order = Order.builder().orderId("ORD12345").status("Shipped").build();
 
+        OrderSQLGenerator orderSQLGenerator = new OrderSQLGenerator();
+        System.out.println(orderSQLGenerator.generateCreateTableSQL());
+        System.out.println();
+        System.out.println(orderSQLGenerator.generateInsertSQL(List.of(order)));
+        System.out.println();
 
-    /**
-     * Validates an object using a reflection-based validation mechanism.
-     *
-     * @param obj the object to validate
-     */
-    private static void validateWithReflection(Object obj) {
-        try {
-            Validator.validate(obj);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+        UserSQLGenerator userSQLGenerator = new UserSQLGenerator();
+        System.out.println(userSQLGenerator.generateCreateTableSQL());
+        System.out.println();
+        System.out.println(userSQLGenerator.generateInsertSQL(List.of(user, user2)));
+        System.out.println();
+
+        ProductSQLGenerator productSQLGenerator = new ProductSQLGenerator();
+        System.out.println(productSQLGenerator.generateCreateTableSQL());
+        System.out.println();
+        System.out.println(productSQLGenerator.generateInsertSQL(List.of(product)));
+        System.out.println();
     }
 }

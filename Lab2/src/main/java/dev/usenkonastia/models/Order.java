@@ -1,10 +1,12 @@
 package dev.usenkonastia.models;
 
-import dev.usenkonastia.processor.Column;
-import dev.usenkonastia.processor.SqlGenerator;
-import dev.usenkonastia.processor.Table;
+import dev.usenkonastia.processor.validation.annotations.Column;
+import dev.usenkonastia.processor.validation.annotations.SqlGenerator;
+import dev.usenkonastia.processor.validation.annotations.Table;
 import dev.usenkonastia.processor.validation.annotations.NotNull;
 import dev.usenkonastia.processor.validation.annotations.StringLength;
+import lombok.Builder;
+import lombok.Getter;
 
 /**
  * Represents an order with orderId and status, validated using custom annotations.
@@ -12,6 +14,8 @@ import dev.usenkonastia.processor.validation.annotations.StringLength;
  * @author Anastasiia Usenko
  */
 @SqlGenerator
+@Getter
+@Builder
 @Table(name = "orders")
 public class Order {
 
@@ -20,11 +24,7 @@ public class Order {
     private String orderId;
 
     @Column(name = "status", type = "TEXT")
+    @NotNull
     @StringLength(max = 10)
     private String status;
-
-    public Order(String orderId, String status) {
-        this.orderId = orderId;
-        this.status = status;
-    }
 }

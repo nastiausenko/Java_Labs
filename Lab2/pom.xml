@@ -17,6 +17,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.36</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>dev.usenkonastia</groupId>
 			<artifactId>lab3</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -31,6 +37,11 @@
 				<version>3.12.1</version>
 				<configuration>
 					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.36</version>
+						</path>
 						<path>
 							<groupId>dev.usenkonastia</groupId>
 							<artifactId>lab3</artifactId>

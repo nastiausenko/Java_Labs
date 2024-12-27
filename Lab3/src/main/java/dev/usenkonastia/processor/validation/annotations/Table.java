@@ -1,4 +1,4 @@
-package dev.usenkonastia.processor;
+package dev.usenkonastia.processor.validation.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

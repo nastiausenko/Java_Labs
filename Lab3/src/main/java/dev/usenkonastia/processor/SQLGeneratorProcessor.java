@@ -1,31 +1,24 @@
 package dev.usenkonastia.processor;
 
 import com.google.auto.service.AutoService;
-import dev.usenkonastia.processor.validation.annotations.MaxValue;
-import dev.usenkonastia.processor.validation.annotations.MinValue;
-import dev.usenkonastia.processor.validation.annotations.NotNull;
-import dev.usenkonastia.processor.validation.annotations.StringLength;
+import dev.usenkonastia.processor.validation.annotations.*;
 
 import javax.annotation.processing.*;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("dev.usenkonastia.processor.SqlGenerator")
-@SupportedSourceVersion(javax.lang.model.SourceVersion.RELEASE_17)
+@SupportedAnnotationTypes("dev.usenkonastia.processor.validation.annotations.SqlGenerator")
+@SupportedSourceVersion(javax.lang.model.SourceVersion.RELEASE_21)
 public class SQLGeneratorProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
         Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(SqlGenerator.class);
 
         for (Element element : annotatedElements) {
@@ -47,15 +40,27 @@ public class SQLGeneratorProcessor extends AbstractProcessor {
                         .createSourceFile(packageName + "." + generatorClassName)
                         .openWriter())) {
 
+            // Package declaration
             writer.printf("package %s;%n%n", packageName);
+            writer.println("""
+            import dev.usenkonastia.processor.validation.Validator;
+            
+            import java.lang.reflect.Method;
+            import java.util.List;
+            
+            """);
+
+            // Class declaration
             writer.printf("public class %s {%n%n", generatorClassName);
 
             // Generate CREATE TABLE SQL
-            writer.println("    public String generateCreateTableSQL() {");
-            writer.println("        StringBuilder sql = new StringBuilder();");
-            writer.printf("        sql.append(\"CREATE TABLE %s (\\n\");%n", extractTableName(classElement));
-
-            writer.println("        sql.append(\"    id SERIAL PRIMARY KEY,\\n\"); // Add id field");
+            writer.printf("""
+                        public String generateCreateTableSQL() {
+                            StringBuilder sql = new StringBuilder();
+                    
+                            sql.append("CREATE TABLE %s (\\n");
+                            sql.append("    id SERIAL PRIMARY KEY,\\n");
+                    """.formatted(extractTableName(classElement)));
 
             for (Element field : classElement.getEnclosedElements()) {
                 if (field.getKind() == ElementKind.FIELD) {
@@ -70,8 +75,7 @@ public class SQLGeneratorProcessor extends AbstractProcessor {
                         }
 
                         // Handle StringLength annotation
-                        StringLength stringLength =
-                                field.getAnnotation(StringLength.class);
+                        StringLength stringLength = field.getAnnotation(StringLength.class);
                         if (stringLength != null) {
                             columnDefinition.append(" CHECK(LENGTH(").append(column.name()).append(") >= ")
                                     .append(stringLength.min()).append(" AND LENGTH(").append(column.name())
@@ -79,10 +83,8 @@ public class SQLGeneratorProcessor extends AbstractProcessor {
                         }
 
                         // Handle MinValue and MaxValue annotations
-                       MinValue minValue =
-                                field.getAnnotation(MinValue.class);
-                       MaxValue maxValue =
-                                field.getAnnotation(MaxValue.class);
+                        MinValue minValue = field.getAnnotation(MinValue.class);
+                        MaxValue maxValue = field.getAnnotation(MaxValue.class);
                         if (minValue != null) {
                             columnDefinition.append(" CHECK(").append(column.name()).append(" >= ")
                                     .append(minValue.value()).append(")");
@@ -92,56 +94,111 @@ public class SQLGeneratorProcessor extends AbstractProcessor {
                                     .append(maxValue.value()).append(")");
                         }
 
-                        writer.printf("        sql.append(\"    %s,\\n\");%n", columnDefinition.toString());
+                        writer.printf("        sql.append(\"    %s,\\n\");%n", columnDefinition);
                     }
                 }
             }
 
-            writer.println("        sql.delete(sql.length() - 3, sql.length()); // Remove last comma");
-            writer.println("        sql.append(\")\\n);\");");
-            writer.println("        return sql.toString();");
-            writer.println("    }");
+            // Finalize CREATE TABLE SQL
+            writer.println("""
+                            
+                                    if (sql.charAt(sql.length() - 2) == ',') {
+                                        sql.delete(sql.length() - 2, sql.length());
+                                    }
+                            
+                                    sql.append("\\n);");
+                                    return sql.toString();
+                                }
+                            """);
 
-            writer.println();
-
-            // Generate INSERT SQL
-            // Generate INSERT SQL
-            writer.println("    public String generateInsertSQL(Object object) {");
-            writer.println("        StringBuilder sql = new StringBuilder();");
-            writer.printf("        sql.append(\"INSERT INTO %s (\");%n", extractTableName(classElement));
-
-// Динамічні списки для полів і значень
-            writer.println("        StringBuilder columnNames = new StringBuilder();");
-            writer.println("        StringBuilder placeholders = new StringBuilder();");
+            writer.printf("""
+                        public String generateInsertSQL(List<?> objects) {
+                            if (objects == null || objects.isEmpty()) {
+                                throw new IllegalArgumentException("List of objects is null or empty.");
+                            }
+                    
+                            for (Object object : objects) {
+                                try {
+                                    Validator.validate(object);
+                                } catch (Exception e) {
+                                    throw new IllegalArgumentException(e.getMessage());
+                                }
+                            }
+                    
+                            StringBuilder sql = new StringBuilder();
+                            sql.append("INSERT INTO %s (");
+                    
+                            StringBuilder columnNames = new StringBuilder();
+                            columnNames.append("%s");
+                    
+                            sql.append(columnNames).append(") VALUES ");
+                    
+                            for (Object object : objects) {
+                                StringBuilder values = new StringBuilder();
+                                values.append("(");
+                    """.formatted(extractTableName(classElement), getColumnNames(classElement)));
 
             for (Element field : classElement.getEnclosedElements()) {
                 if (field.getKind() == ElementKind.FIELD) {
                     Column column = field.getAnnotation(Column.class);
                     if (column != null) {
-                        String columnName = column.name();
-                        writer.printf("        if (columnNames.length() > 0) columnNames.append(\", \");%n");
-                        writer.printf("        if (placeholders.length() > 0) placeholders.append(\", \");%n");
-                        writer.printf("        columnNames.append(\"%s\");%n", columnName);
-                        writer.println("        placeholders.append(\"?\");");
+                        String fieldName = field.getSimpleName().toString();
+                        writer.printf("""
+                                
+                                            try {
+                                                Method getter = object.getClass().getMethod("get%s");
+                                                Object value = getter.invoke(object);
+                                
+                                                values.append("\\'").append(value).append("\\'").append(", ");
+                                            } catch (Exception e) {
+                                                throw new RuntimeException("Error accessing getter for field: %s", e);
+                                            }
+                                """.formatted(capitalize(fieldName), fieldName));
                     }
                 }
             }
 
-// Завершення SQL-запиту
-            writer.println("        sql.append(columnNames).append(\") VALUES (\").append(placeholders).append(\");\");");
-            writer.println("        return sql.toString();");
-            writer.println("    }");
-
-
-            writer.println("}");
-
+            writer.println("""
+                                values.delete(values.length() - 2, values.length());
+                                values.append("), ");
+                                sql.append(values);
+                            }
+                    
+                            sql.delete(sql.length() - 2, sql.length());
+                            sql.append(";");
+                            return sql.toString();
+                        }
+                    }
+                    """);
         } catch (IOException e) {
             processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Error generating SQLGenerator class for " + className);
         }
     }
 
+    private String getColumnNames(Element classElement) {
+        StringBuilder columnNames = new StringBuilder();
+        for (Element field : classElement.getEnclosedElements()) {
+            if (field.getKind() == ElementKind.FIELD) {
+                Column column = field.getAnnotation(Column.class);
+                if (column != null) {
+                    String columnName = column.name().isEmpty() ? field.getSimpleName().toString().toLowerCase() : column.name();
+                    columnNames.append(columnName).append(", ");
+                }
+            }
+        }
+
+        if (!columnNames.isEmpty()) {
+            columnNames.delete(columnNames.length() - 2, columnNames.length());
+        }
+        return columnNames.toString();
+    }
+
     private String extractTableName(Element classElement) {
         Table table = classElement.getAnnotation(Table.class);
         return (table != null && !table.name().isEmpty()) ? table.name() : classElement.getSimpleName().toString().toLowerCase();
+    }
+
+    private String capitalize(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

@@ -16,12 +16,6 @@
 			<version>1.1.1</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>dev.usenkonastia</groupId>
-			<artifactId>lab2</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
 
 	<properties>

@@ -1,12 +1,14 @@
 package dev.usenkonastia.models;
 
-import dev.usenkonastia.processor.Column;
-import dev.usenkonastia.processor.SqlGenerator;
-import dev.usenkonastia.processor.Table;
+import dev.usenkonastia.processor.validation.annotations.Column;
+import dev.usenkonastia.processor.validation.annotations.SqlGenerator;
+import dev.usenkonastia.processor.validation.annotations.Table;
 import dev.usenkonastia.processor.validation.annotations.MaxValue;
 import dev.usenkonastia.processor.validation.annotations.MinValue;
 import dev.usenkonastia.processor.validation.annotations.NotNull;
 import dev.usenkonastia.processor.validation.annotations.StringLength;
+import lombok.Builder;
+import lombok.Getter;
 
 /**
  * Represents a user with username and age, validated using custom annotations.
@@ -14,6 +16,8 @@ import dev.usenkonastia.processor.validation.annotations.StringLength;
  * @author Anastasiia Usenko
  */
 @SqlGenerator
+@Getter
+@Builder
 @Table(name = "users")
 public class User {
 
@@ -28,18 +32,6 @@ public class User {
     private Integer age;
 
     @Column(name = "password", type = "TEXT")
+    @NotNull
     private String password;
-
-    public User(String username, Integer age) {
-        this.username = username;
-        this.age = age;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
 }

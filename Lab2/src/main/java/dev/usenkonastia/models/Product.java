@@ -1,10 +1,8 @@
 package dev.usenkonastia.models;
 
-import dev.usenkonastia.processor.Column;
-import dev.usenkonastia.processor.SqlGenerator;
-import dev.usenkonastia.processor.Table;
-import dev.usenkonastia.processor.validation.annotations.MinValue;
-import dev.usenkonastia.processor.validation.annotations.NotNull;
+import dev.usenkonastia.processor.validation.annotations.*;
+import lombok.Builder;
+import lombok.Getter;
 
 /**
  * Represents a product with name and price, validated using custom annotations.
@@ -12,18 +10,16 @@ import dev.usenkonastia.processor.validation.annotations.NotNull;
  * @author Anastasiia Usenko
  */
 @SqlGenerator
+@Getter
+@Builder
 @Table(name="products")
 public class Product {
     @Column(name="product_name", type = "TEXT")
+    @StringLength(min = 1, max = 255)
     @NotNull
     private String name;
 
     @Column(name = "price", type = "DECIMAL")
     @MinValue(0)
     private Double price;
-
-    public Product(String name, Double price) {
-        this.name = name;
-        this.price = price;
-    }
 }
