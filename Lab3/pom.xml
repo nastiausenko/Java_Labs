@@ -5,9 +5,24 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>dev.usenkonastia</groupId>
-	<artifactId>lab2</artifactId>
+	<artifactId>lab3</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.auto.service</groupId>
+			<artifactId>auto-service</artifactId>
+			<version>1.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>dev.usenkonastia</groupId>
+			<artifactId>lab2</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
 
 	<properties>
 		<maven.compiler.source>21</maven.compiler.source>
@@ -15,33 +30,17 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>dev.usenkonastia</groupId>
-			<artifactId>lab3</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.12.1</version>
+				<version>3.8.0</version>
 				<configuration>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>dev.usenkonastia</groupId>
-							<artifactId>lab3</artifactId>
-							<version>0.0.1-SNAPSHOT</version>
-						</path>
-					</annotationProcessorPaths>
 					<source>21</source>
 					<target>21</target>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 </project>

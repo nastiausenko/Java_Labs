@@ -1,6 +1,6 @@
-package dev.usenkonastia.validation.validators;
+package dev.usenkonastia.processor.validation.validators;
 
-import dev.usenkonastia.validation.annotations.MinValue;
+import dev.usenkonastia.processor.validation.annotations.MinValue;
 
 import java.lang.reflect.Field;
 

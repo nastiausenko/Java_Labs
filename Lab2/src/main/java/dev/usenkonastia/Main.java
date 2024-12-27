@@ -1,12 +1,10 @@
 package dev.usenkonastia;
 
 import dev.usenkonastia.models.Order;
+import dev.usenkonastia.models.OrderSQLGenerator;
 import dev.usenkonastia.models.Product;
 import dev.usenkonastia.models.User;
-import dev.usenkonastia.validation.impl.UserValidator;
-import dev.usenkonastia.validation.Validator;
-import dev.usenkonastia.validation.ValidatorWithoutReflection;
-
+import dev.usenkonastia.processor.validation.Validator;
 /**
  * Entry point of the application that demonstrates validation of objects
  * with and without the use of reflection.
@@ -27,17 +25,11 @@ public class Main {
 
         validateWithReflection(product);
         validateWithReflection(order);
-
-        long startReflection = System.nanoTime();
         validateWithReflection(user);
-        long endReflection = System.nanoTime();
 
-        long startNonReflection = System.nanoTime();
-        validateWithoutReflection(user);
-        long endNonReflection = System.nanoTime();
-
-        System.out.println("Validation with reflection took: " + (endReflection - startReflection) + " ns");
-        System.out.println("Validation without reflection took: " + (endNonReflection - startNonReflection) + " ns");
+        OrderSQLGenerator generator = new OrderSQLGenerator();
+        System.out.println(generator.generateCreateTableSQL());
+        System.out.println(generator.generateInsertSQL(user));
     }
 
 
@@ -49,21 +41,6 @@ public class Main {
     private static void validateWithReflection(Object obj) {
         try {
             Validator.validate(obj);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-    /**
-     * Validates a {@link User} object using a non-reflection-based validation mechanism.
-     *
-     * @param user the user object to validate
-     */
-    private static void validateWithoutReflection(User user) {
-        ValidatorWithoutReflection<User> userValidator = new UserValidator();
-
-        try {
-            userValidator.validate(user);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }

@@ -1,6 +1,6 @@
-package dev.usenkonastia.validation.validators;
+package dev.usenkonastia.processor.validation.validators;
 
-import dev.usenkonastia.validation.annotations.MaxValue;
+import dev.usenkonastia.processor.validation.annotations.MaxValue;
 
 import java.lang.reflect.Field;
 

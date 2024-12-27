@@ -1,10 +1,10 @@
-package dev.usenkonastia.validation;
+package dev.usenkonastia.processor.validation;
 
-import dev.usenkonastia.validation.annotations.MaxValue;
-import dev.usenkonastia.validation.annotations.MinValue;
-import dev.usenkonastia.validation.annotations.NotNull;
-import dev.usenkonastia.validation.annotations.StringLength;
-import dev.usenkonastia.validation.validators.*;
+import dev.usenkonastia.processor.validation.annotations.MaxValue;
+import dev.usenkonastia.processor.validation.annotations.MinValue;
+import dev.usenkonastia.processor.validation.annotations.NotNull;
+import dev.usenkonastia.processor.validation.annotations.StringLength;
+import dev.usenkonastia.processor.validation.validators.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
