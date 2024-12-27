@@ -2,6 +2,8 @@
 
 ## Anastasiia Usenko IM-23
 
+### Variant 3
+
 This project is designed to generate, process, and analyze data about chthonic creatures. 
 The program generates random creatures, processes them using custom collectors and aggregation 
 mechanisms to analyze their attack power. The program also filters creatures by type and determines 

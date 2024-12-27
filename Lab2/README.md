@@ -2,6 +2,8 @@
 
 ## Anastasiia Usenko IM-23
 
+### Variant 2
+
 The project implements an object field validator using custom annotations in Java. Custom annotations for validation are 
 provided, such as MaxValue, MinValue, NotNull, and StringLength. The project includes two approaches: one that uses 
 reflection to dynamically validate object fields using annotations, and another that uses no reflection, using direct 
