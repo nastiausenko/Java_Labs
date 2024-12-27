@@ -12,11 +12,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Annotation processor for generating SQL commands for table creation and insertion.
+ * <p>
+ * This processor generates an SQL generator class for each annotated class with the {@link SqlGenerator} annotation.
+ * </p>
+ *
+ * @author Anastasiia Usenko
+ */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes("dev.usenkonastia.processor.validation.annotations.SqlGenerator")
 @SupportedSourceVersion(javax.lang.model.SourceVersion.RELEASE_17)
 public class SQLGeneratorProcessor extends AbstractProcessor {
 
+    /**
+     * Processes the annotated elements and generates the SQL generator class.
+     *
+     * @param annotations The set of annotations found in the current round.
+     * @param roundEnv The environment for the current round of annotation processing.
+     * @return true if the annotations are processed successfully.
+     */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(SqlGenerator.class);
@@ -30,6 +45,11 @@ public class SQLGeneratorProcessor extends AbstractProcessor {
         return true;
     }
 
+    /**
+     * Generates the SQL generator class for the annotated class element.
+     *
+     * @param classElement The annotated class element.
+     */
     private void generateSQLGenerator(Element classElement) {
         String className = classElement.getSimpleName().toString();
         String packageName = processingEnv.getElementUtils().getPackageOf(classElement).toString();
